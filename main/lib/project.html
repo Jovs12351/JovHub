@@ -302,6 +302,19 @@
         .zoomIn {
             animation-name: zoomIn;
         }
+
+        .category-select {
+            margin-bottom: 20px;
+        }
+
+        .category-select select {
+            width: 200px;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            background-color: white;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -312,6 +325,13 @@
     </nav>
 
     <div class="container py-4">
+        <div class="category-select">
+            <select id="category-filter" class="form-select">
+                <option value="all">All Categories</option>
+                <!-- Categories will be dynamically added here -->
+            </select>
+        </div>
+
         <div id="book-list" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
             <!-- Book projects will be dynamically added here -->
         </div>
@@ -384,11 +404,13 @@
         let modal;
         let deleteModal;
         let projectToDeleteIndex;
+        let categories = new Set(['all']);
 
         function loadProjects() {
             const savedProjects = localStorage.getItem('bookProjects');
             if (savedProjects) {
                 projects = JSON.parse(savedProjects);
+                updateCategories();
                 renderProjects();
             }
         }
@@ -397,38 +419,62 @@
             localStorage.setItem('bookProjects', JSON.stringify(projects));
         }
 
-        async function renderProjects() {
+        function updateCategories() {
+            projects.forEach(project => {
+                if (project.genre) {
+                    categories.add(project.genre);
+                }
+            });
+            renderCategoryOptions();
+        }
+
+        function renderCategoryOptions() {
+            const categorySelect = document.getElementById('category-filter');
+            categorySelect.innerHTML = '<option value="all">All Categories</option>';
+            categories.forEach(category => {
+                if (category !== 'all') {
+                    const option = document.createElement('option');
+                    option.value = category;
+                    option.textContent = category;
+                    categorySelect.appendChild(option);
+                }
+            });
+        }
+
+        async function renderProjects(category = 'all') {
             const bookList = document.getElementById('book-list');
             bookList.innerHTML = '';
             for (let i = 0; i < projects.length; i++) {
                 const project = projects[i];
-                const projectElement = document.createElement('div');
-                projectElement.className = 'col';
-                const coverUrl = await fetchBookCover(project.title);
-                const statusClass = getStatusClass(project.status);
-                projectElement.innerHTML = `
-                    <div class="card h-100 book-project">
-                        <img src="${coverUrl}" class="card-img-top book-cover" alt="${project.title} cover">
-                        <div class="card-body">
-                            <h5 class="card-title">${project.title}</h5>
-                            <p class="card-text">
-                                <span class="status-badge ${statusClass}"><i class="fas fa-circle me-1"></i>${project.status}</span>
-                            </p>
-                            <p class="card-text"><small class="text-muted"><i class="fas fa-tag me-1"></i>${project.genre}</small></p>
-                        </div>
-                        <div class="card-footer bg-transparent border-0">
-                            <div class="project-actions">
-                                <a href="${project.link}" target="_blank" class="btn btn-outline-primary btn-sm btn-open-project">
-                                    <i class="fas fa-external-link-alt me-1"></i>Open Project
-                                </a>
-                                <button class="btn btn-outline-danger btn-sm" onclick="showDeleteConfirmation(${i})">
-                                    <i class="fas fa-trash-alt me-1"></i>Delete
-                                </button>
+                if (category === 'all' || project.genre === category) {
+                    const projectElement = document.createElement('div');
+                    projectElement.className = 'col';
+                    const coverUrl = await fetchBookCover(project.title);
+                    const statusClass = getStatusClass(project.status);
+                    projectElement.innerHTML = `
+                        <div class="card h-100 book-project">
+                            <img src="${coverUrl}" class="card-img-top book-cover" alt="${project.title} cover">
+                            <div class="card-body">
+                                <h5 class="card-title">${project.title}</h5>
+                                <p class="card-text">
+                                    <span class="status-badge ${statusClass}"><i class="fas fa-circle me-1"></i>${project.status}</span>
+                                </p>
+                                <p class="card-text"><small class="text-muted"><i class="fas fa-tag me-1"></i>${project.genre}</small></p>
+                            </div>
+                            <div class="card-footer bg-transparent border-0">
+                                <div class="project-actions">
+                                    <a href="${project.link}" target="_blank" class="btn btn-outline-primary btn-sm btn-open-project">
+                                        <i class="fas fa-external-link-alt me-1"></i>Open Project
+                                    </a>
+                                    <button class="btn btn-outline-danger btn-sm" onclick="showDeleteConfirmation(${i})">
+                                        <i class="fas fa-trash-alt me-1"></i>Delete
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `;
-                bookList.appendChild(projectElement);
+                    `;
+                    bookList.appendChild(projectElement);
+                }
             }
         }
 
@@ -477,6 +523,7 @@
                 const newProject = { title, status, genre, link };
                 projects.push(newProject);
                 saveProjects();
+                updateCategories();
                 renderProjects();
 
                 // Reset form and close modal
@@ -509,6 +556,9 @@
             loadProjects();
 
             document.getElementById('confirmDelete').addEventListener('click', deleteProject);
+            document.getElementById('category-filter').addEventListener('change', function() {
+                renderProjects(this.value);
+            });
         });
     </script>
 </body>

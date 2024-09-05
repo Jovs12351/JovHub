@@ -4,148 +4,130 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>404 - Page Not Found</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400&display=swap');
+
         :root {
-            --primary-color: #4a90e2;
-            --secondary-color: #2c3e50;
-            --background-color: #f0f4f8;
-            --text-color: #333;
-            --accent-color: #e74c3c;
+            --bg-color: #000000;
+            --text-color: #ffffff;
+            --accent-color: #00ffff;
+            --secondary-color: #ff00ff;
+            --tertiary-color: #ffff00;
         }
 
-        * {
+        body, html {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--background-color);
+            height: 100%;
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
             color: var(--text-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 2rem;
             overflow: hidden;
+            cursor: none;
         }
 
         .container {
-            text-align: center;
-            max-width: 600px;
-            width: 100%;
-            background-color: white;
-            padding: 4rem 2rem;
-            border-radius: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            padding: 2rem;
             position: relative;
-            z-index: 1;
-            overflow: hidden;
-        }
-
-        .background-shape {
-            position: absolute;
-            background-color: var(--primary-color);
-            opacity: 0.1;
-            border-radius: 50%;
-            z-index: -1;
-            will-change: transform;
-        }
-
-        .shape-1 {
-            width: 300px;
-            height: 300px;
-            top: -150px;
-            left: -150px;
-            animation: float 8s ease-in-out infinite;
-        }
-
-        .shape-2 {
-            width: 200px;
-            height: 200px;
-            bottom: -100px;
-            right: -100px;
-            animation: float 6s ease-in-out infinite reverse;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(10deg); }
+            z-index: 2;
         }
 
         .error-code {
-            font-size: clamp(8rem, 15vw, 12rem);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20vw;
             font-weight: 700;
-            color: var(--primary-color);
-            line-height: 1;
-            margin-bottom: 2rem;
+            margin: 0;
             position: relative;
-            display: inline-block;
+            text-shadow: 0 0 10px var(--accent-color);
+            animation: float 6s ease-in-out infinite;
         }
 
-        .digit {
-            display: inline-block;
-            animation: bounce 0.6s ease infinite alternate;
-            position: relative;
-            will-change: transform;
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
 
-        .digit:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .digit:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        @keyframes bounce {
-            to {
-                transform: translateY(-20px);
-                text-shadow: 0 20px 10px rgba(0, 0, 0, 0.15);
-            }
-        }
-
-        .digit::before {
-            content: attr(data-digit);
+        .error-code::before,
+        .error-code::after {
+            content: attr(data-text);
             position: absolute;
-            bottom: -100px;
+            width: 100%;
+            height: 100%;
+            top: 0;
             left: 0;
-            color: rgba(0, 0, 0, 0.1);
-            transform: scale(1, -1);
-        }
-
-        h2 {
-            font-size: clamp(1.5rem, 5vw, 2.5rem);
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            color: var(--secondary-color);
-            animation: appear 1s ease-out 0.2s both;
-        }
-
-        p {
-            font-size: clamp(1rem, 3vw, 1.2rem);
-            margin-bottom: 2.5rem;
-            color: var(--text-color);
             opacity: 0.8;
-            animation: appear 1s ease-out 0.4s both;
+        }
+
+        .error-code::before {
+            left: 2px;
+            text-shadow: -2px 0 var(--secondary-color);
+            animation: glitch-1 2s infinite linear alternate-reverse;
+        }
+
+        .error-code::after {
+            left: -2px;
+            text-shadow: 2px 0 var(--accent-color);
+            animation: glitch-2 3s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-1 {
+            0% { clip-path: inset(20% 0 30% 0); }
+            20% { clip-path: inset(60% 0 10% 0); }
+            40% { clip-path: inset(40% 0 50% 0); }
+            60% { clip-path: inset(80% 0 5% 0); }
+            80% { clip-path: inset(10% 0 70% 0); }
+            100% { clip-path: inset(30% 0 20% 0); }
+        }
+
+        @keyframes glitch-2 {
+            0% { clip-path: inset(15% 0 35% 0); }
+            20% { clip-path: inset(55% 0 15% 0); }
+            40% { clip-path: inset(45% 0 55% 0); }
+            60% { clip-path: inset(75% 0 10% 0); }
+            80% { clip-path: inset(5% 0 75% 0); }
+            100% { clip-path: inset(35% 0 25% 0); }
+        }
+
+        .subtitle {
+            font-size: 2rem;
+            margin: 1rem 0;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 1s 0.5s forwards;
+        }
+
+        .message {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 1s 1s forwards;
         }
 
         .btn {
             display: inline-block;
-            padding: 1rem 2.5rem;
-            background-color: var(--primary-color);
-            color: white;
+            padding: 12px 24px;
+            background-color: transparent;
+            color: var(--accent-color);
             text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
+            border: 2px solid var(--accent-color);
+            border-radius: 30px;
+            font-weight: 400;
             transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            animation: appear 1s ease-out 0.6s both;
             position: relative;
             overflow: hidden;
+            opacity: 0;
+            animation: fadeIn 1s 1.5s forwards;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
         }
 
         .btn::before {
@@ -155,12 +137,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(
-                120deg,
-                transparent,
-                rgba(255, 255, 255, 0.3),
-                transparent
-            );
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
             transition: all 0.6s;
         }
 
@@ -168,120 +145,155 @@
             left: 100%;
         }
 
-        .btn:hover {
-            background-color: var(--secondary-color);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        @keyframes appear {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .particles {
-            position: absolute;
+        .space-scene {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
-            pointer-events: none;
+            perspective: 1000px;
+            z-index: 1;
         }
 
-        .particle {
+        .stars {
             position: absolute;
-            display: block;
-            width: 5px;
-            height: 5px;
-            background-color: var(--primary-color);
-            box-shadow: 0 0 10px 2px rgba(74, 144, 226, 0.2);
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            animation: rotate 100s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotateX(0) rotateY(0); }
+            100% { transform: rotateX(360deg) rotateY(360deg); }
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: #ffffff;
             border-radius: 50%;
-            animation: rise 10s infinite ease-in;
-            will-change: transform, opacity;
         }
 
-        @keyframes rise {
-            0% {
-                opacity: 0;
-                transform: translateY(0) scale(1);
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-1000px) scale(0.5);
-            }
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            animation: orbit linear infinite;
         }
 
-        @media (prefers-reduced-motion: reduce) {
-            .background-shape,
-            .digit,
-            .btn::before,
-            .particle {
-                animation: none;
-            }
+        .planet1 {
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle at 30% 30%, var(--accent-color), #000);
+            top: 20%;
+            left: 20%;
+            animation-duration: 30s;
+        }
 
-            .btn:hover {
-                transform: none;
-            }
+        .planet2 {
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle at 30% 30%, var(--secondary-color), #000);
+            top: 70%;
+            right: 20%;
+            animation-duration: 20s;
+        }
+
+        @keyframes orbit {
+            0% { transform: rotate(0deg) translateX(100px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(100px) rotate(-360deg); }
+        }
+
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--accent-color);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            transition: all 0.1s ease;
+            z-index: 9999;
+        }
+
+        .cursor::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            position: absolute;
+            border: 2px solid var(--secondary-color);
+            border-radius: 50%;
+            opacity: .5;
+            top: 5px;
+            left: 5px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @media (max-width: 768px) {
-            .container {
-                padding: 3rem 1.5rem;
+            .error-code { font-size: 25vw; }
+            .subtitle { font-size: 1.5rem; }
+            .message { font-size: 1rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .error-code, .error-code::before, .error-code::after,
+            .btn::before, .stars, .planet, .cursor {
+                animation: none;
+            }
+            .subtitle, .message, .btn {
+                animation: none;
+                opacity: 1;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="background-shape shape-1"></div>
-        <div class="background-shape shape-2"></div>
-        <div class="particles"></div>
-        <div class="error-code">
-            <span class="digit" data-digit="4">4</span>
-            <span class="digit" data-digit="0">0</span>
-            <span class="digit" data-digit="4">4</span>
-        </div>
-        <h2>Page Not Found</h2>
-        <p>Oops! The page you're looking for doesn't exist.</p>
-        <a href="/" class="btn">Back to Home</a>
+    <div class="space-scene">
+        <div class="stars" id="stars"></div>
+        <div class="planet planet1"></div>
+        <div class="planet planet2"></div>
     </div>
-
+    <div class="cursor" id="cursor"></div>
+    <div class="container">
+        <h1 class="error-code" data-text="404" aria-label="404">404</h1>
+        <p class="subtitle">[ERROR]  Page not found</p>
+        <p class="message">The page you are looking for does not exist, or it may have been moved.</p>
+        <a href="/" class="btn">Return to Home Base</a>
+    </div>
     <script>
-        function createParticle() {
-            const particle = document.createElement('span');
-            particle.classList.add('particle');
-            
-            const size = Math.random() * 5 + 5;
-            particle.style.width = `${size}px`;
-            particle.style.height = `${size}px`;
-            
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.top = Math.random() * 100 + '%';
-            
-            particle.style.animationDuration = Math.random() * 3 + 7 + 's';
-            particle.style.animationDelay = Math.random() * 5 + 's';
-            
-            document.querySelector('.particles').appendChild(particle);
-            
-            setTimeout(() => {
-                particle.remove();
-            }, 10000);
+        // Create stars
+        const starsContainer = document.getElementById('stars');
+        const starCount = 200;
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.animationDelay = `${Math.random() * 5}s`;
+            star.style.transform = `translateZ(${Math.random() * 1000}px)`;
+            starsContainer.appendChild(star);
         }
 
-        setInterval(createParticle, 300);
+        // Custom cursor
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = `${e.clientX}px`;
+            cursor.style.top = `${e.clientY}px`;
+        });
+
+        // Parallax effect
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+            
+            document.querySelector('.error-code').style.transform = `translate(${mouseX * 20}px, ${mouseY * 20}px)`;
+            document.querySelector('.planet1').style.transform = `translate(${mouseX * 40}px, ${mouseY * 40}px)`;
+            document.querySelector('.planet2').style.transform = `translate(${mouseX * -30}px, ${mouseY * -30}px)`;
+        });
     </script>
 </body>
 </html>
